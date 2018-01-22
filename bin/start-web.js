@@ -21,7 +21,8 @@ const webpackConfig = getWebpackConfig({
 });
 
 const webpackCompiler = webpack(webpackConfig);
-const webpackDevMiddlewareInstance = webpackMiddleware(webpackCompiler,
+const webpackDevMiddlewareInstance = webpackMiddleware(
+  webpackCompiler,
   {
     publicPath: '',
     noInfo: false,

@@ -4,7 +4,7 @@ import jssNested from 'jss-nested';
 
 jss.use(jssNested());
 
-const getCssWidthOrHeight = v => (isNaN(v) ? v : `${v}px`);
+const getCssWidthOrHeight = v => (Number.isNaN(v) ? v : `${v}px`);
 
 export default (_svgString) => {
   const svgString = _svgString.replace(/(fill|stroke)="replace"/g, '');

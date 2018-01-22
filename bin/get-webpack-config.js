@@ -46,7 +46,7 @@ module.exports = ({
     bail,
     devtool: 'source-map',
     entry: {
-      [filesPrefix]: []
+      [entryPrefix]: []
         .concat(isWebpackDevServer ? ['webpack-hot-middleware/client'] : [])
         .concat(path.join(rootPath, 'src', 'index')),
     },
@@ -74,14 +74,6 @@ module.exports = ({
         new HtmlWebpackPlugin({
           minify: {},
           template: path.join(rootPath, 'src', 'web', 'index.html'),
-          chunks: [filesPrefix],
-          inject: 'body',
-        }),
-        new HtmlWebpackPlugin({
-          minify: {},
-          template: path.join(rootPath, 'src', 'web', 'index.html'),
-          filename: 'land.html',
-          chunks: [landingPrefix],
           inject: 'body',
         }),
       ] : [])
@@ -105,7 +97,7 @@ module.exports = ({
               {
                 loader: 'babel-loader',
                 options: {
-                  presets: ['es2015', 'stage-2'],
+                  presets: ['env', 'stage-2'],
                   plugins: ['transform-runtime', 'transform-decorators-legacy'],
                 },
               },
@@ -118,7 +110,7 @@ module.exports = ({
               {
                 loader: 'babel-loader',
                 options: {
-                  presets: ['es2015', 'stage-2', 'react'].concat(isWebpackDevServer ? ['react-hmre'] : []),
+                  presets: ['env', 'stage-2', 'react'].concat(isWebpackDevServer ? ['react-hmre'] : []),
                   plugins: ['transform-runtime', 'transform-decorators-legacy'],
                 },
               },
@@ -156,7 +148,7 @@ module.exports = ({
               {
                 loader: path.resolve(__dirname, 'loader', 'svg'),
               },
-            ].concat(
+            ].concat((
               ([BUILD_TYPE.ios, BUILD_TYPE.android].indexOf(type) !== -1) ?
                 [
                   {
@@ -166,8 +158,8 @@ module.exports = ({
                   {
                     loader: 'raw-loader',
                   },
-                ],
-            ),
+                ]
+            )),
           },
           {
             test: /\.(gif|png|jpg|mp3)$/,
