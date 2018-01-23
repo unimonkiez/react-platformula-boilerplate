@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/unimonkiez/react-platformula-boilerplate#readme",
   "scripts": {
-    "eject-link": "react-native eject || echo 'Already have ios or andoird folders, continues' && react-native link",
+    "eject-link": "react-native eject || echo 'Already have ios or andoird folders, continues' && react-native link && node ./bin/react-native-link/link-assets.js",
     "build": "node ./bin/build.js",
     "dev:ios": "npm run build -- --type 1 --dev -w",
     "dev:android": "npm run build -- --type 2 --dev -w",
@@ -45,11 +45,6 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "rn": "react-native"
-  },
-  "rnpm": {
-    "assets": [
-      "./dist/link-asset/"
-    ]
   },
   "dependencies": {
     "@web-deps": "./web/",

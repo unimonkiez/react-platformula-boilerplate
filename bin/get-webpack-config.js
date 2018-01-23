@@ -164,7 +164,41 @@ module.exports = ({
             )),
           },
           {
-            test: /\.(gif|png|jpg|mp3)$/,
+            test: /\.mp3$/,
+            use: []
+              .concat({
+                loader: path.resolve(__dirname, 'loader', 'sound'),
+              })
+              .concat((
+                ([BUILD_TYPE.ios, BUILD_TYPE.android].indexOf(type) !== -1) ? [
+                  {
+                    loader: 'string-replace-loader',
+                    options: {
+                      multiple: [
+                        { search: '__webpack_public_path__ + ', replace: '' },
+                        { search: './link-asset/', replace: '' },
+                      ],
+                    },
+                  },
+                  {
+                    loader: 'file-loader',
+                    options: {
+                      name: './link-asset/[hash].[ext]',
+                    },
+                  },
+                ] : [
+                  {
+                    loader: 'url-loader',
+                    options: {
+                      limit: 10000,
+                      name: './asset/[hash].[ext]',
+                    },
+                  },
+                ]
+              )),
+          },
+          {
+            test: /\.(gif|png|jpg)$/,
             issuer: /\.html$/,
             use: [
               {
@@ -176,7 +210,7 @@ module.exports = ({
             ],
           },
           {
-            test: /\.(gif|png|jpg|mp3)$/,
+            test: /\.(gif|png|jpg)$/,
             issuer: file => (!/\.html$/.test(file)),
             use: ([BUILD_TYPE.ios, BUILD_TYPE.android].indexOf(type) !== -1) ?
               [
@@ -218,9 +252,9 @@ module.exports = ({
       ],
     },
     externals: []
-      .concat(nodeExternals({
+      .concat(([BUILD_TYPE.ios, BUILD_TYPE.android].indexOf(type) !== -1) ? nodeExternals({
         modulesDir: path.join(rootPath, 'node_modules'),
-      }))
+      }) : [])
       .concat((
         /*
         Ignore require that start with build-asset
