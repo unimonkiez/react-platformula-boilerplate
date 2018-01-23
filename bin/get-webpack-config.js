@@ -183,7 +183,7 @@ module.exports = ({
                   {
                     loader: 'file-loader',
                     options: {
-                      name: './link-asset/[hash].[ext]',
+                      name: './link-asset/asset_[hash].[ext]',
                     },
                   },
                 ] : [

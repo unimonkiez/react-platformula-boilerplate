@@ -15,16 +15,16 @@ const { ios: projectConfig } = require('../config');
  * This function works in a similar manner to its Android version,
  * except it does not copy assets but creates Xcode Group references
  */
-module.exports = function linkAssetsIOS(files, { addFont }) {
+module.exports = function cleanAssetsIOS(files, { addFont }) {
   const project = xcode.project(projectConfig.pbxprojPath).parseSync();
   const plist = getPlist(project, projectConfig.sourceDir);
 
   createGroupWithMessage(project, 'Resources');
 
-  function addResourceFile(f) {
+  function removeResourceFile(f) {
     return (f || [])
       .map(asset => (
-        project.addResourceFile(
+        project.removeResourceFile(
           path.relative(projectConfig.sourceDir, asset),
           { target: project.getFirstTarget().uuid },
         )
@@ -33,11 +33,11 @@ module.exports = function linkAssetsIOS(files, { addFont }) {
       .map(file => file.basename);
   }
 
-  const addedFiles = addResourceFile(files);
+  const removedFiles = removeResourceFile(files);
 
   if (addFont) {
     const existingFonts = (plist.UIAppFonts || []);
-    const allFonts = [...existingFonts, ...addedFiles];
+    const allFonts = existingFonts.filter(file => removedFiles.indexOf(file) === -1);
     plist.UIAppFonts = Array.from(new Set(allFonts)); // use Set to dedupe w/existing
   }
 
