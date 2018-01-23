@@ -3,6 +3,8 @@ const webpack = require('webpack');
 const path = require('path');
 const packageJson = require('../package.json');
 
+const nodeExternals = require('webpack-node-externals');
+
 // Plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -215,29 +217,23 @@ module.exports = ({
         path.join(rootPath, 'node_modules'),
       ],
     },
-    externals: [
-      /*
+    externals: []
+      .concat(nodeExternals({
+        modulesDir: path.join(rootPath, 'node_modules'),
+      }))
+      .concat((
+        /*
         Ignore require that start with build-asset
         Copied to dist by webpack, will be handled by react-native packager
       */
-      (context, request, callback) => {
-        const foundExternal = request.indexOf('./build-asset/') === 0;
-        if (foundExternal) {
-          return callback(null, `commonjs ${request}`);
+        (context, request, callback) => {
+          const foundExternal = request.indexOf('./build-asset/') === 0;
+          if (foundExternal) {
+            return callback(null, `commonjs ${request}`);
+          }
+          callback();
+          return undefined;
         }
-        callback();
-        return undefined;
-      },
-    ]
-      .concat(([BUILD_TYPE.ios, BUILD_TYPE.android].indexOf(type) !== -1) ? [
-        'react',
-        'prop-types',
-        'react-platformula',
-        'react-native',
-        'react-native-svg',
-        'react-native-sound',
-        'react-native-keep-awake',
-        '@omerman/react-native-wheel-picker-android',
-      ] : []),
+      )),
   });
 };
