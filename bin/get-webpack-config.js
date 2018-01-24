@@ -133,16 +133,23 @@ module.exports = ({
             ],
           },
           {
-            test: /\.(ttf|eot|otf|woff|woff2)$/,
-            use: [
-              {
-                loader: 'url-loader',
-                options: {
-                  limit: 10000,
-                  name: './font/[hash].[ext]',
+            test: /\.ttf$/,
+            use: []
+              .concat(([BUILD_TYPE.ios, BUILD_TYPE.android].indexOf(type) !== -1) ? [
+                {
+                  loader: path.resolve(__dirname, 'loader', 'font', 'index.js'),
+                  options: {
+                    name: './link-asset/font_[hash].[ext]',
+                  },
                 },
-              },
-            ],
+              ] : [
+                {
+                  loader: path.resolve(__dirname, 'loader', 'font', 'index.web.js'),
+                  options: {
+                    name: './font/[hash].[ext]',
+                  },
+                },
+              ]),
           },
           {
             test: /\.svg$/,

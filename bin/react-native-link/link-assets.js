@@ -16,7 +16,7 @@ const {
 } = require('./config');
 
 const syncFileExtensions = {
-  otf: {
+  ttf: {
     android: {
       path: path.resolve(androidPath, 'app', 'src', 'main', 'assets', 'fonts'),
     },
