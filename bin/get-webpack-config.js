@@ -139,7 +139,7 @@ module.exports = ({
                 {
                   loader: path.resolve(__dirname, 'loader', 'font', 'index.js'),
                   options: {
-                    name: './link-asset/font_[hash].[ext]',
+                    path: './link-asset/',
                   },
                 },
               ] : [

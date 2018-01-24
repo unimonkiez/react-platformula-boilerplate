@@ -1,19 +1,22 @@
 const fileLoader = require('file-loader');
+const fontkit = require('fontkit');
 
 module.exports = function jssFontLoader(ttfContent) {
-  const source = fileLoader.call(
-    this,
+  const { postscriptName } = fontkit.create(ttfContent);
+  fileLoader.call(
+    Object.assign({}, this, {
+      query: Object.assign({}, this.query, {
+        name: `${this.query.path}${postscriptName}.ttf`,
+        path: undefined,
+      }),
+    }),
     ttfContent,
   );
-  const sourceValue = JSON.parse(source.replace('module.exports = __webpack_public_path__ + ', '').replace(';', ''));
-  const lastSlashIndex = sourceValue.lastIndexOf('/');
-  const lastDotIndex = sourceValue.lastIndexOf('.');
-  const fileName = sourceValue.substring(lastSlashIndex + 1, lastDotIndex);
 
   return `
 var getFontCustomModule = require('bin/transform/font').default;
 
-module.exports = getFontCustomModule(${JSON.stringify(fileName)});
+module.exports = getFontCustomModule(${JSON.stringify(postscriptName)});
 `.substr(1); // to remove first empty line
 };
 
