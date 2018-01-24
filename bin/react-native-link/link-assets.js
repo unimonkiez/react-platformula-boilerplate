@@ -47,36 +47,57 @@ try {
   // ok
 }
 
-let assets = [];
+let iosAssets = [];
 
 try {
-  const assetsFolderPath = path.resolve(rootPath, 'dist', 'link-asset');
-  assets = fs.readdirSync(assetsFolderPath).map(file => path.resolve(assetsFolderPath, file));
+  const assetsFolderPath = path.resolve(rootPath, 'dist', 'ios', 'link-asset');
+  iosAssets = fs.readdirSync(assetsFolderPath)
+    .map(file => path.resolve(assetsFolderPath, file));
+} catch (e) {
+  // ok
+}
+let androidAssets = [];
+
+try {
+  const assetsFolderPath = path.resolve(rootPath, 'dist', 'android', 'link-asset');
+  androidAssets = fs.readdirSync(assetsFolderPath)
+    .map(file => path.resolve(assetsFolderPath, file));
 } catch (e) {
   // ok
 }
 
 Object.keys(syncFileExtensions).forEach((fileExtension) => {
-  const assetsWithExtension = assets.filter(asset => path.extname(asset) === `.${fileExtension}`);
-  const iosAssetsWithExtension = prevIosAssets.filter(asset => path.extname(asset) === `.${fileExtension}`);
-  const androidAssetsWithExtension = prevAndroidAssets.filter(asset => path.extname(asset) === `.${fileExtension}`);
+  const [
+    prevIosAssetsWithExtension,
+    prevAndroidAssetsWithExtension,
+    iosAssetsWithExtension,
+    androidAssetsWithExtension,
+  ] = [
+    prevIosAssets,
+    prevAndroidAssets,
+    iosAssets,
+    androidAssets,
+  ].map(assets => assets.filter(asset => path.extname(asset) === `.${fileExtension}`));
 
-  if (iosAssetsWithExtension.length > 0) {
+  if (prevIosAssetsWithExtension.length > 0) {
     log.info(`Cleaning previously linked ${fileExtension} assets from ios project`);
-    cleanAssetsIos(iosAssetsWithExtension, syncFileExtensions[fileExtension].ios);
+    cleanAssetsIos(prevIosAssetsWithExtension, syncFileExtensions[fileExtension].ios);
+  }
+  if (prevAndroidAssetsWithExtension.length > 0) {
+    log.info(`Cleaning previously linked ${fileExtension} assets from android project`);
+    cleanAssetsAndroid(prevAndroidAssetsWithExtension, syncFileExtensions[fileExtension].android);
+  }
+  if (iosAssetsWithExtension.length > 0) {
+    log.info(`Linking ${fileExtension} assets to ios project`);
+    copyAssetsIos(iosAssetsWithExtension, syncFileExtensions[fileExtension].ios);
   }
   if (androidAssetsWithExtension.length > 0) {
-    log.info(`Cleaning previously linked ${fileExtension} assets from android project`);
-    cleanAssetsAndroid(androidAssetsWithExtension, syncFileExtensions[fileExtension].android);
-  }
-  if (assetsWithExtension.length > 0) {
     log.info(`Linking ${fileExtension} assets to android project`);
-    copyAssetsAndroid(assetsWithExtension, syncFileExtensions[fileExtension].android);
-
-    log.info(`Linking ${fileExtension} assets to ios project`);
-    copyAssetsIos(assetsWithExtension, syncFileExtensions[fileExtension].ios);
+    copyAssetsAndroid(androidAssetsWithExtension, syncFileExtensions[fileExtension].android);
   }
 });
 
-manifest.ios.write(assets);
-manifest.android.write(assets);
+const baseNameOnly = assets => assets.map(asset => path.basename(asset));
+
+manifest.ios.write(baseNameOnly(iosAssets));
+manifest.android.write(baseNameOnly(androidAssets));

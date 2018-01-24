@@ -34,13 +34,13 @@ module.exports = ({
       break;
     case BUILD_TYPE.ios:
       deviceExtensions = extensions.map(extension => `.ios${extension}`);
-      entryPrefix = 'index.ios';
-      outputPath = path.join(rootPath, 'dist');
+      entryPrefix = 'index';
+      outputPath = path.join(rootPath, 'dist', 'ios');
       break;
     case BUILD_TYPE.android:
       deviceExtensions = extensions.map(extension => `.android${extension}`);
-      entryPrefix = 'index.android';
-      outputPath = path.join(rootPath, 'dist');
+      entryPrefix = 'index';
+      outputPath = path.join(rootPath, 'dist', 'android');
       break;
   }
 
