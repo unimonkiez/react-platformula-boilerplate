@@ -1,4 +1,5 @@
 # react-platformula-boilerplate
+[![Build Status](https://travis-ci.org/uvop/react-platformula-boilerplate.svg?branch=master)](https://travis-ci.org/uvop/react-platformula-boilerplate)
 
 ## The ultimate starter-kit to write native and web apps using react!
 
@@ -24,7 +25,7 @@ import React, { Component } from 'react';
 import Block from 'react-platformula/block';
 import { getCustom as getCustomText } from 'react-platformula/text';
 import punkFontFamily from './punk-font.ttf';
-import { instance as lightTap } from './light-tap.mp3';
+import lightTap from './light-tap.mp3';
 import getCustomSmiley from './smiley.svg';
 
 const CustomText = getCustomText({

@@ -10,10 +10,8 @@ export default (source) => {
     play() {
       audio.play();
     },
-  };
-
-  return {
-    instance,
     loaded: promise.then(() => instance),
   };
+
+  return instance;
 };

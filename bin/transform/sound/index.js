@@ -20,10 +20,8 @@ export default (source) => {
     play() {
       sound.play();
     },
-  };
-
-  return {
-    instance,
     loaded: promise.then(() => instance),
   };
+
+  return instance;
 };
