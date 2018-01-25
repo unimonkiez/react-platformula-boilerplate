@@ -137,14 +137,14 @@ module.exports = ({
             use: []
               .concat(([BUILD_TYPE.ios, BUILD_TYPE.android].indexOf(type) !== -1) ? [
                 {
-                  loader: path.resolve(__dirname, 'loader', 'font', 'index.js'),
+                  loader: 'react-native-font-loader',
                   options: {
                     path: './link-asset/',
                   },
                 },
               ] : [
                 {
-                  loader: path.resolve(__dirname, 'loader', 'font', 'index.web.js'),
+                  loader: 'ttf-loader',
                   options: {
                     name: './font/[hash].[ext]',
                   },
