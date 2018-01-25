@@ -34,7 +34,7 @@ test:
 
 deploy-web:
   only:
-    - master
+    - tags
   stage: deploy
   dependencies:
     - installation
@@ -59,7 +59,7 @@ build-android:
     - npm run android:copy-licenses
     - npm run create:android:release
     - ls ./android/app/build/outputs/apk/
-    - mv ./android/app/build/outputs/apk/app-release.apk hangboard-coach.apk
+    - mv ./android/app/build/outputs/apk/app-release.apk app.apk
   artifacts:
     paths:
-      - ./hangboard-coach.apk
+      - ./app.apk

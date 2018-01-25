@@ -18,7 +18,7 @@ export default class HelloWorld extends Component {
   }
 }
 ```
-* ### Easy usage of `svg`, `fonts` and `sounds`, no more manual linking!!
+* ### Easy usage of `svg`, `fonts` and `sounds`, no more manual linking! :fire::fire:
 ```jsx
 import React, { Component } from 'react';
 import Block from 'react-platformula/block';
@@ -40,15 +40,14 @@ const CustomSmiley = getCustomSmiley({
 });
 
 export default class Button extends Component {
-  handlePress(e) {
-    const { onPress } = this.props;
+  handlePress() {
     lightTap.play();
   }
 
   render() {
     const { text } = this.props;
     return (
-      <Block>
+      <Block onPress={() => this.handlePress()}>
         <CustomSmiley />
         <CustomText>
           Click me for sound
@@ -58,7 +57,9 @@ export default class Button extends Component {
   }
 }
 ```
-* ### Uses `webpack` with single and easy configure file, you can add support for typescript, flow or whatever you like!
+* ### Uses `webpack` with a single and easy configure file, you can add support for typescript, flow or whatever you like!
+
+* ### Use `.web`, `.ios`, `.android` extensions (or any of the globals `__WEB__`, `__IOS__`, `__ANDROID__`) to write code for a specific platform.
 
 ## Installation
 * Make sure you installed `react-native`'s dependencies (such as java, xcode) check their [tutorial](https://facebook.github.io/react-native/docs/getting-started.html) if needed.
@@ -67,12 +68,15 @@ export default class Button extends Component {
   to make it your own do the fellowing steps
   * Change [`app.json`](https://github.com/unimonkiez/react-platformula-boilerplate/blob/master/app.json) name and display name.
   * Change registered component name too in [`src/index.js`](https://github.com/unimonkiez/react-platformula-boilerplate/blob/master/src/index.js).
-  * If you need to keep the ejected projects ([some libraries linking is manual](https://github.com/facebook/react-native/issues/13783)), just remove them from `.gitignore` file.
+  * If you need to keep the ejected projects ([some libraries linking is manual :weary:](https://github.com/facebook/react-native/issues/13783)), just remove them from `.gitignore` file.
 
 ## Usage
 * `npm start, npm run start:web` - Start website on [localhost:8090](http://localhost:8090).
 * `npm run start:android` - Install and start on android.
 * `npm run start:ios` - Install and start on ios.
+* `npm run serve:android` - Start packager for android, if no need to install.
+* `npm run serve:ios` - Start packager for ios, if no need to install.
 * `npm run lint[:report][:error][:fix]` - Run lints usings eslint, recommand to install eslint-plugin on your editor.
 * `npm run test[:watch]` - Run unit tests, uses [`jest`](https://facebook.github.io/jest/).
-* `npm run create:android:release` - Creates release APK.
+* `npm run create:android:release` - Create release APK.
+* `npm run build[:web][:ios][:android]` - To make a minified build, needed for web and ios. As for android it is already used within `create:android:release`.
