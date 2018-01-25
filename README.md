@@ -1,7 +1,9 @@
 # react-platformula-boilerplate
-[![Build Status](https://travis-ci.org/uvop/react-platformula-boilerplate.svg?branch=master)](https://travis-ci.org/uvop/react-platformula-boilerplate)
+[![Build Status](https://travis-ci.org/unimonkiez/react-platformula-boilerplate.svg?branch=master)](https://travis-ci.org/unimonkiez/react-platformula-boilerplate)
 
 ## The ultimate starter-kit to write native and web apps using react!
+
+#### Checkout my climbing app - [Climb Dojo app](http://hangboard-coach.com), which I wrote using this boilerplate.
 
 # Features
 * ### Uses [`react-platformula`](https://github.com/uvop/react-platformula), which makes writing cross-platform easy
