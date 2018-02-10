@@ -1,5 +1,4 @@
-# react-platformula-boilerplate
-[![Build Status](https://travis-ci.org/unimonkiez/react-platformula-boilerplate.svg?branch=master)](https://travis-ci.org/unimonkiez/react-platformula-boilerplate)
+# <span><img src="https://raw.githubusercontent.com/react-platformula/react-platformula.github.io/master/logo.svg?sanitize=true" height='60' alt="Platformula Logo" aria-label="React.Platformula.github.io" />&nbsp;React Platformula Boilerplate</span> &middot; [![Build Status](https://travis-ci.org/unimonkiez/react-platformula-boilerplate.svg?branch=master)](https://travis-ci.org/unimonkiez/react-platformula-boilerplate)
 
 ## The ultimate starter-kit to write native and web apps using react!
 
