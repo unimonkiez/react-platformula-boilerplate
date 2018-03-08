@@ -1243,6 +1243,10 @@ base64-js@1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.1.2.tgz#d6400cac1c4c660976d90d07a04351d89395f5e8"
 
+base64-js@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.2.0.tgz#a39992d723584811982be5e290bb6a53d86700f1"
+
 base64-js@^1.0.2, base64-js@^1.1.2:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.2.1.tgz#a91947da1f4a516ea38e5b4ec0ec3773675e0886"
@@ -5251,6 +5255,14 @@ plist@^1.2.0:
     xmlbuilder "4.0.0"
     xmldom "0.1.x"
 
+plist@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/plist/-/plist-2.1.0.tgz#57ccdb7a0821df21831217a3cad54e3e146a1025"
+  dependencies:
+    base64-js "1.2.0"
+    xmlbuilder "8.2.2"
+    xmldom "0.1.x"
+
 pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
@@ -5477,12 +5489,14 @@ react-dom@^16.2.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-native-asset@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-asset/-/react-native-asset-1.0.0.tgz#ed85d0e30c9417c609bcf136ea3c58843537b6b7"
+react-native-asset@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-asset/-/react-native-asset-1.1.1.tgz#9ac4e201cd3664ca5fd103b5a4fc158c04987eba"
   dependencies:
     fs-extra "^5.0.0"
     npmlog "^4.1.2"
+    plist "^2.1.0"
+    sha1-file "^1.0.0"
     xcode "^1.0.0"
 
 react-native-device-info@^0.13.0:
@@ -6102,6 +6116,10 @@ sha.js@^2.4.0, sha.js@^2.4.8:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+sha1-file@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/sha1-file/-/sha1-file-1.0.0.tgz#ed0c1463e9d3346dacf58904ddb3b99d25577075"
 
 shallow-copy@~0.0.1:
   version "0.0.1"
