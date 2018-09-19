@@ -25,12 +25,12 @@ lint:
   script:
     - yarn run lint:err
 
-test:
+typecheck:
   stage: test
   dependencies:
     - installation
   script:
-    - yarn run test
+    - yarn run typecheck
 
 deploy-web:
   only:

@@ -1,5 +1,5 @@
 module.exports = source => `
-var getSoundCustomModule = require('bin/transform/sound').default;
+var getSoundCustomModule = require('scripts/transform/sound').default;
 ${source}
 
 module.exports = getSoundCustomModule(module.exports);

@@ -1,6 +1,9 @@
 import React from 'react';
+// Used in app, no need to check here
+/* eslint-disable */
 import jss from 'jss';
 import jssNested from 'jss-nested';
+/* eslint-enable */
 
 jss.use(jssNested());
 

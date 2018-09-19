@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getCustom as getCustomBlock } from 'react-platformula/block';
 import Text from 'react-platformula/text';
-import { instance as sound } from './light-tap.mp3';
+import sound from './light-tap.mp3';
 
 const Block = getCustomBlock({
   borderColor: 'red',
@@ -43,4 +43,3 @@ export default class Button extends Component {
     );
   }
 }
-

@@ -1,5 +1,5 @@
 module.exports = source => `
-var getSvgCustomModule = require('bin/transform/svg').default;
+var getSvgCustomModule = require('scripts/transform/svg').default;
 ${source}
 
 module.exports = getSvgCustomModule(module.exports);

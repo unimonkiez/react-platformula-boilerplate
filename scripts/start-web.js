@@ -1,7 +1,7 @@
 const webpack = require('webpack');
-const getWebpackConfig = require('./get-webpack-config');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
+const getWebpackConfig = require('./get-webpack-config');
 const app = require('../web/app');
 
 const port = 8090;

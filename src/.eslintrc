@@ -3,7 +3,7 @@
     "browser": true,
     "node": false
   },
-  "extends": "../bin/webpack-eslint.js",
+  "extends": "../scripts/webpack-eslint.js",
   "overrides": [
     {
       "files": [

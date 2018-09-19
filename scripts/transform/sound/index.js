@@ -1,4 +1,7 @@
+// Used in app, no need to check here
+/* eslint-disable */
 import Sound from 'react-native-sound';
+/* eslint-enable */
 
 export default (source) => {
   let res;

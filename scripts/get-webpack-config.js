@@ -1,14 +1,12 @@
-const BUILD_TYPE = require('./build-type');
 const webpack = require('webpack');
 const path = require('path');
+const TsDeclarationWebpackPlugin = require('ts-declaration-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BUILD_TYPE = require('./build-type');
 const packageJson = require('../package.json');
 
-const nodeExternals = require('webpack-node-externals');
-
-// Plugins
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-const extensions = ['.js', '.jsx'];
+const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 const rootPath = path.join(__dirname, '..');
 
 /**
@@ -44,9 +42,42 @@ module.exports = ({
       break;
   }
 
+  const babelBase = {
+    loader: 'babel-loader',
+    options: {
+      presets: [
+        ['@babel/preset-env', (type === BUILD_TYPE.web) ? {
+          targets: {
+            browsers: [
+              'last 2 Chrome versions',
+              'last 2 Firefox versions',
+              'last 2 iOS versions',
+              'last 2 ChromeAndroid versions',
+            ],
+          },
+        } : {
+          targets: {
+            node: 'current',
+          },
+        }],
+      ],
+      plugins: [
+        '@babel/plugin-transform-runtime',
+        ['@babel/plugin-proposal-decorators', { legacy: true }],
+        ['@babel/plugin-proposal-class-properties', { loose: true }],
+      ],
+    },
+  };
+
   return ({
     bail,
+    mode: isProd ? 'production' : 'development',
     devtool: 'source-map',
+    target: type === BUILD_TYPE.web ? undefined : 'node',
+    node: type === BUILD_TYPE.web ? undefined : {
+      __dirname: false,
+      __filename: false,
+    },
     entry: {
       [entryPrefix]: []
         .concat(isWebpackDevServer ? ['webpack-hot-middleware/client'] : [])
@@ -58,6 +89,7 @@ module.exports = ({
       libraryTarget: 'umd',
     },
     plugins: [
+      new TsDeclarationWebpackPlugin(),
       new webpack.DefinePlugin({
         __PROD__: JSON.stringify(isProd),
         __DEV__: JSON.stringify(!isProd),
@@ -81,41 +113,86 @@ module.exports = ({
       ] : [])
       .concat(isWebpackDevServer ? [
         new webpack.HotModuleReplacementPlugin(),
-      ] : [])
-      .concat(isProd ? [
-        new webpack.optimize.UglifyJsPlugin({
-          output: {
-            comments: false,
-          },
-        }),
       ] : []),
+    optimization: {
+      minimize: isProd,
+    },
     module: {
       rules: []
         .concat([
           {
             test: /\.js$/,
             exclude: /node_modules/,
-            use: [
-              {
-                loader: 'babel-loader',
-                options: {
-                  presets: ['env', 'stage-2'],
-                  plugins: ['transform-runtime', 'transform-decorators-legacy'],
-                },
-              },
-            ],
+            use: [babelBase],
           },
           {
             test: /\.jsx$/,
             exclude: /node_modules/,
             use: [
-              {
-                loader: 'babel-loader',
-                options: {
-                  presets: ['env', 'stage-2', 'react'].concat(isWebpackDevServer ? ['react-hmre'] : []),
-                  plugins: ['transform-runtime', 'transform-decorators-legacy'],
+              Object.assign(
+                {},
+                babelBase,
+                {
+                  options: Object.assign(
+                    {},
+                    babelBase.options,
+                    {
+                      presets: []
+                        .concat(babelBase.options.presets)
+                        .concat('@babel/preset-react'),
+                      plugins: babelBase.options.plugins
+                        .concat(isWebpackDevServer ? ['react-hot-loader/babel'] : []),
+                    },
+                  ),
                 },
-              },
+              ),
+            ],
+          },
+          {
+            test: /\.ts$/,
+            exclude: /node_modules/,
+            use: [
+              Object.assign(
+                {},
+                babelBase,
+                {
+                  options: Object.assign(
+                    {},
+                    babelBase.options,
+                    {
+                      presets: []
+                        .concat(babelBase.options.presets)
+                        .concat('@babel/preset-typescript'),
+                    },
+                  ),
+                },
+              ),
+            ],
+          },
+          {
+            test: /\.tsx$/,
+            exclude: /node_modules/,
+            use: [
+              Object.assign(
+                {},
+                babelBase,
+                {
+                  options: Object.assign(
+                    {},
+                    babelBase.options,
+                    {
+                      presets: []
+                        .concat(babelBase.options.presets)
+                        .concat([
+                          '@babel/preset-react',
+                          '@babel/preset-typescript',
+                        ]),
+                      plugins: babelBase.options.plugins
+                        .concat(isWebpackDevServer ? ['react-hot-loader/babel'] : []),
+                    },
+                  ),
+                },
+              ),
             ],
           },
           {
@@ -158,8 +235,8 @@ module.exports = ({
                 loader: path.resolve(__dirname, 'loader', 'svg'),
               },
             ].concat((
-              ([BUILD_TYPE.ios, BUILD_TYPE.android].indexOf(type) !== -1) ?
-                [
+              ([BUILD_TYPE.ios, BUILD_TYPE.android].indexOf(type) !== -1)
+                ? [
                   {
                     loader: 'react-native-svg-loader',
                   },
@@ -219,8 +296,8 @@ module.exports = ({
           {
             test: /\.(gif|png|jpg)$/,
             issuer: file => (!/\.html$/.test(file)),
-            use: ([BUILD_TYPE.ios, BUILD_TYPE.android].indexOf(type) !== -1) ?
-              [
+            use: ([BUILD_TYPE.ios, BUILD_TYPE.android].indexOf(type) !== -1)
+              ? [
                 {
                   loader: 'string-replace-loader',
                   options: {
@@ -236,8 +313,8 @@ module.exports = ({
                     name: './build-asset/[hash].[ext]',
                   },
                 },
-              ] :
-              [
+              ]
+              : [
                 {
                   loader: 'url-loader',
                   options: {

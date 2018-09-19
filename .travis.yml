@@ -5,4 +5,4 @@ cache: yarn
 script:
 - |
     yarn run lint:error
-    yarn run test
+    yarn run typecheck
